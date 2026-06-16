@@ -1,0 +1,14 @@
+from pathlib import Path
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_DATA_DIR = PROJECT_ROOT / "data" / "chest_xray"
+DEFAULT_MODELS_DIR = PROJECT_ROOT / "models"
+DEFAULT_REPORTS_DIR = PROJECT_ROOT / "reports"
+DEFAULT_OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+
+CLASS_NAMES = ["NORMAL", "PNEUMONIA"]
+POSITIVE_CLASS = "PNEUMONIA"
+
+IMAGENET_MEAN = [0.485, 0.456, 0.406]
+IMAGENET_STD = [0.229, 0.224, 0.225]
