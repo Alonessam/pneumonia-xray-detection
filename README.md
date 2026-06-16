@@ -25,10 +25,12 @@ pneumonia_xray_ai/
   requirements.txt           # Main python dependencies
   prepare_data.py            # Data preprocessing utility
   compile_report.py          # Report compilation helper
-  FINAL_RAPOR.md             # Clean project markdown report (Turkish)
-  Zaturre_Tespiti_Final_Raporu.docx       # Clean Word Final Report (Turkish)
-  Zaturre_Tespiti_On_Arastirma_Raporu.docx # Clean Word Pre-Research Report (Turkish)
-  Zaturre_Tespiti_Proje_Onerisi.docx       # Clean Word Project Proposal (Turkish)
+  FINAL_REPORT.md            # Clean project markdown report (English)
+  PRE_RESEARCH_REPORT.md     # Clean pre-research markdown report (English)
+  PROJECT_PROPOSAL.md        # Clean project proposal markdown report (English)
+  Pneumonia_Detection_Final_Report.docx         # Clean Word Final Report (English)
+  Pneumonia_Detection_Pre_Research_Report.docx   # Clean Word Pre-Research Report (English)
+  Pneumonia_Detection_Project_Proposal.docx     # Clean Word Project Proposal (English)
   data/
     chest_xray/              # (Ignored) Dataset directory containing train/val/test splits
   models/                    # (Ignored) Saved model weights (*.pt)
