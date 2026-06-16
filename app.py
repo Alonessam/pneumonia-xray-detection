@@ -23,9 +23,31 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+import urllib.request
+import os
+
 @st.cache_resource
 def cached_model(checkpoint_path: str):
     device = get_device()
+    
+    # Auto-download from GitHub Release if not exists
+    if not os.path.exists(checkpoint_path):
+        filename = os.path.basename(checkpoint_path)
+        if filename == "best_resnet50_finetuned.pt":
+            st.info("📥 Model weights not found on server. Downloading pretrained ResNet-50 weights from GitHub Releases (94MB)... Please wait.")
+            url = "https://github.com/Alonessam/pneumonia-xray-detection/releases/download/v1.0.0/best_resnet50_finetuned.pt"
+            os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
+            try:
+                urllib.request.urlretrieve(url, checkpoint_path)
+                st.success("✅ Download complete!")
+            except Exception as e:
+                st.error(f"🚨 Failed to download model weights from GitHub Releases: {e}")
+                st.stop()
+        else:
+            st.error("🚨 Eğitilmiş model bulunamadı!")
+            st.warning(f"Sistem şu an `{checkpoint_path}` dosyasını arıyor. Lütfen dosyayı yükleyin.")
+            st.stop()
+
     model, checkpoint = load_model_for_gradcam(checkpoint_path, device)
     return model, checkpoint, device
 
@@ -48,10 +70,15 @@ with st.sidebar:
     karar destek sağlaması amaçlanmıştır.
     """)
 
-if not Path(checkpoint_path).exists():
+# Check model path
+default_path = str(DEFAULT_MODELS_DIR / "best_resnet50_finetuned.pt")
+is_default = os.path.abspath(checkpoint_path) == os.path.abspath(default_path)
+
+if not Path(checkpoint_path).exists() and not is_default:
     # Fallback to older name if finetuned doesn't exist yet
-    if Path(str(DEFAULT_MODELS_DIR / "best_resnet50.pt")).exists():
-        checkpoint_path = str(DEFAULT_MODELS_DIR / "best_resnet50.pt")
+    fallback_path = str(DEFAULT_MODELS_DIR / "best_resnet50.pt")
+    if Path(fallback_path).exists():
+        checkpoint_path = fallback_path
     else:
         st.error("🚨 Eğitilmiş model bulunamadı!")
         st.warning(f"Sistem şu an `{checkpoint_path}` veya `best_resnet50.pt` dosyasını arıyor. Eğitim adımını tamamladığınızdan emin olun.")
